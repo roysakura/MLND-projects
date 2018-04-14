@@ -12589,7 +12589,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># 对于每一个特征，找到值异常高或者是异常低的数据</span>
@@ -12617,6 +12617,8 @@ div#notebook {
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">log_data</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="n">step</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">log_data</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="n">step</span><span class="p">))]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
         <span class="n">outliers_index_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
+<span class="k">print</span> <span class="n">outliers_index_list</span>
+<span class="k">print</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers_index_list</span><span class="p">)</span>
 <span class="n">dupes</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">outliers_index_list</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outliers_index_list</span><span class="p">[:</span><span class="n">n</span><span class="p">]]</span>
 <span class="k">print</span> <span class="n">dupes</span>
     <span class="c1"># 可选：选择你希望移除的数据点的索引</span>
@@ -12648,6 +12650,8 @@ Data points considered outliers for the feature &#39;Grocery&#39;:
 Data points considered outliers for the feature &#39;Frozen&#39;:
 Data points considered outliers for the feature &#39;Detergents_Paper&#39;:
 Data points considered outliers for the feature &#39;Delicatessen&#39;:
+[65, 66, 81, 95, 96, 128, 171, 193, 218, 304, 305, 338, 353, 355, 357, 412, 86, 98, 154, 356, 75, 154, 38, 57, 65, 145, 175, 264, 325, 420, 429, 439, 75, 161, 66, 109, 128, 137, 142, 154, 183, 184, 187, 203, 233, 285, 289, 343]
+48
 [154, 65, 75, 66, 128, 154]
 </pre>
 </div>
@@ -12685,7 +12689,7 @@ Data points considered outliers for the feature &#39;Delicatessen&#39;:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>*<em>回答:</em> 数据[65, 75, 66, 128, 154] 多于一个特征下被看作是异常的数据，这些点应该被移除，因为这些数据的出现会对该特征下的数据集产生统计性倾斜,非常规数据不具有代表性。*</p>
+<p>*<em>回答:</em> 数据[65, 75, 66, 128, 154] 多于一个特征下被看作是异常的数据，这些点应该被移除，因为这些数据的出现会对该特征下的数据集产生统计性倾斜,非常规数据不具有代表性。而观察到的异常记录有48个，占总体样本超过10%，若全部异常点都删去，会造成样本量不足，容易偏离原来方向。*</p>
 
 </div>
 </div>
@@ -12785,7 +12789,7 @@ Data points considered outliers for the feature &#39;Delicatessen&#39;:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>*<em>回答:</em>第一和第二主成分总共表示方差为0.7068.前四个主成分总共方差为0.9311,从用户消费角度来看前四个主要成分的消费行为分别能代表客户为零售商,餐厅,超市,及咖啡厅*</p>
+<p>*<em>回答:</em>第一和第二主成分总共表示方差为0.7068.前四个主成分总共方差为0.9311,从用户消费角度来看前四个主要成分的消费行为分别能代表客户为零售商,餐厅,超市,及咖啡厅.PCA主成分解释方差比能反映该主成分首原参数变化影响程度。如第一主成分，洗涤剂纸在这里的解释方差比绝对值大于0.5(自选阀值)而成负增长，可以说明在消费洗涤剂纸的商户，很少消费在其他品类上。而第二主成分，可以看出，同时消费生鲜，冻肉，熟食的商户很少消费其余品类。总结看出。洗涤剂纸与生鲜/冻肉/熟食很好地区分出两类不同的商户。*</p>
 
 </div>
 </div>
