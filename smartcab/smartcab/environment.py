@@ -334,7 +334,8 @@ class Environment(object):
         # Did the agent attempt a valid move?
         if violation == 0:
             if action == agent.get_next_waypoint(): # Was it the correct action?
-                reward += 2 - penalty # (2, 1)
+                #By Hengen
+                reward += 4 - penalty # (2, 1)
             elif action == None and light != 'green': # Was the agent stuck at a red light?
                 reward += 2 - penalty # (2, 1)
             else: # Valid but incorrect
@@ -353,9 +354,10 @@ class Environment(object):
             elif violation == 2: # Major violation
                 reward += -10
             elif violation == 3: # Minor accident
-                reward += -20
+                reward += -50
             elif violation == 4: # Major accident
-                reward += -40
+            #By Hengen
+                reward += -350
 
         # Did agent reach the goal after a valid move?
         if agent is self.primary_agent:
