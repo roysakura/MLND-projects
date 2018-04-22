@@ -26,6 +26,7 @@ class LearningAgent(Agent):
         ###########
         # Set any additional class parameters as needed
         self.train = 0
+        self.a = 0.4
 
 
     def reset(self, destination=None, testing=False):
@@ -42,7 +43,7 @@ class LearningAgent(Agent):
         # Update epsilon using a decay function of your choice
         # Update additional class parameters as needed
         # If 'testing' is True, set epsilon and alpha to 0
-        self.epsilon = math.e**(-(self.alpha/100)*(self.train))
+        self.epsilon = math.e**(-(self.a/100)*(self.train))
         self.train+=1
         if self.epsilon < 0:
             self.epsilon = 0
@@ -81,7 +82,7 @@ class LearningAgent(Agent):
         ###########
         # Calculate the maximum Q-value of all actions for a given state
 
-        maxQ = max(list(self.Q[state].itervalues()))
+        maxQ = max(self.Q[state].values())
 
         return maxQ 
 
@@ -96,11 +97,9 @@ class LearningAgent(Agent):
         # If it is not, create a new dictionary for that state
         #   Then, for each action available, set the initial Q-value to 0.0
         if self.learning:
-            if state not in self.Q.keys():
-                score = {}
-                for key in self.env.valid_actions:
-                    score[key] = 0.0
-                self.Q[state] = score
+            self.Q.setdefault(state,dict())
+            for action in self.env.valid_actions:
+                self.Q[state].setdefault(action,0.0)
 
         return
 
@@ -131,10 +130,6 @@ class LearningAgent(Agent):
                     if self.Q[state][action] == self.get_maxQ(state):
                         max_Q_action = action
             
-            print '********************'
-            print 'max Q action: %s' % max_Q_action
-            print '********************'
-            
             action = choice((random.choice(self.valid_actions),max_Q_action),1,p=[self.epsilon,1-self.epsilon])
 
 
@@ -152,9 +147,7 @@ class LearningAgent(Agent):
         # When learning, implement the value iteration update rule
         #   Use only the learning rate 'alpha' (do not use the discount factor 'gamma')
         if self.learning:
-            next_state = self.build_state()
-            self.createQ(next_state)
-            self.Q[state][action] = reward + self.alpha * self.get_maxQ(next_state)
+            self.Q[state][action] = (1-self.alpha)*self.Q[state][action] + self.alpha*reward
 
         return
 
@@ -213,7 +206,7 @@ def run():
     # Flags:
     #   tolerance  - epsilon tolerance before beginning testing, default is 0.05 
     #   n_test     - discrete number of testing trials to perform, default is 0
-    sim.run(n_test=10,tolerance=0.1)
+    sim.run(n_test=20,tolerance=0.1)
 
 
 if __name__ == '__main__':
